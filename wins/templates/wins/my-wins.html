@@ -104,7 +104,7 @@
             {% endif %}
 
 
-            <h3 class="my-wins-header">Customer responded <span class="header-count">({{ responded | length }})</span></h3>
+            <h3 class="my-wins-header">Customer confirmed <span class="header-count">({{ responded | length }})</span></h3>
 
             {% if not responded %}
 
@@ -121,11 +121,45 @@
                                 <th class="text-right">Value attributed<br> to our help</th>
                                 <th class="text-right">Export amount</th>
                                 <th>Date won</th>
-                                <th>Date responded</th>
+                                <th>Date confirmed</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for win in responded %}
+                            <tr>
+                                <td class="company-name"><a href="{% url 'win-details' win.id %}" title="View win details">{{ win.company_name }}</a></td>
+                                <td class="country-name">{{ win.country_name }}</td>
+                                <td class="our-help text-right">{{ win.responded.our_help }}</td>
+                                <td class="export-value text-right">&pound;{{ win.total_expected_export_value | intcomma }}</td>
+                                <td class="date">{{ win.date | date:'M Y' }}</td>
+                                <td class="response-date">{{ win.responded.created | date:"d M Y" }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            {% endif %}
+
+
+            {% if rejected %}
+
+                <h3 class="my-wins-header">Customer reported incorrect <span class="header-count">({{ rejected | length }})</span></h3>
+
+                <div class="scroll-table">
+                    <table class="table table-striped responded-wins">
+                        <thead>
+                            <tr>
+                                <th>UK Company <span class="glyphicon glyphicon-option-vertical" aria-hidden="true" title="Sorted by this field"></span><span class="sr-only">(Sorted by this field)</span></th>
+                                <th>Export to</th>
+                                <th class="text-right">Value attributed<br> to our help</th>
+                                <th class="text-right">Export amount</th>
+                                <th>Date won</th>
+                                <th>Date responded</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for win in rejected %}
                             <tr>
                                 <td class="company-name"><a href="{% url 'win-details' win.id %}" title="View win details">{{ win.company_name }}</a></td>
                                 <td class="country-name">{{ win.country_name }}</td>

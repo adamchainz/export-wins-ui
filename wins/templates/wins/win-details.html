@@ -26,6 +26,18 @@
       </p>
     {% endif %}
 
+    {% if win.rejected %}
+      <p class="alert alert-warning">
+        The customer has reported that these details are not correct.
+      </p>
+      <div class="customer-comment">
+        <h3 class="h4">Customer comment</h3>
+        <p>
+          {{ win.customer_comment }}
+        </p>
+      </div>
+    {% endif %}
+
   <div class="row">
     <div class="col-sm-6">
       <div class="panel panel-default">

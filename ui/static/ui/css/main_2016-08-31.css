@@ -133,6 +133,8 @@
 @media (max-width: 768px) { .win-details .top-buttons { position: static; }
   .win-details .top-buttons .btn { width: 100%; margin-bottom: 1.5em; } }
 
+.win-details .customer-comment { padding: 0 2em; margin-bottom: 3em; }
+
 .win-details .contributing-table th { text-align: left; }
 
 .win-details .company-name, .win-details .customer-name { font-size: 24px; }

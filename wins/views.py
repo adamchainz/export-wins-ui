@@ -1,6 +1,7 @@
 import os
 from dateutil.parser import parse as date_parser
 from dateutil.relativedelta import relativedelta
+from operator import itemgetter
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -62,24 +63,27 @@ class MyWinsView(LoginRequiredMixin, TemplateView):
                 )
             win['last_modified'] = win['updated'] or win['created']
 
-        # split wins up for user into unsent, sent and responded
+        # split wins up for user into unsent, sent, confirmed and rejected
         unsent = [w for w in wins if not w['complete']]
-        context['unsent'] = sorted(unsent, key=lambda w: w['last_modified'])
-
         responded = [w for w in wins if w['responded']]
-        context['responded'] = sorted(
-            responded,
-            key=lambda w: w['company_name'],
-        )
+        sent = [w for w in wins if w['complete'] and w not in responded]
+        confirmed = [w for w in responded if w['responded']['agreed']]
+        rejected = [w for w in responded if not w['responded']['agreed']]
 
-        sent = [
-            w for w in wins
-            if w['complete'] and w not in context['responded']
-        ]
+        # sort and add to context
+        context['unsent'] = sorted(unsent, key=itemgetter('last_modified'))
         context['sent'] = sorted(
             sent,
             key=lambda w: w['sent'][0],
             reverse=True,
+        )
+        context['confirmed'] = sorted(
+            confirmed,
+            key=itemgetter('company_name')
+        )
+        context['rejected'] = sorted(
+            rejected,
+            key=itemgetter('company_name'),
         )
 
         return context
